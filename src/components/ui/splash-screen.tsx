@@ -98,8 +98,12 @@ export function SplashScreen() {
         </motion.button>
       </div>
 
-      {/* Cover, hinged at the left edge, swings open */}
-      <div className="absolute inset-0" style={{ perspective: 2600 }}>
+      {/* Cover, hinged at the left edge, swings open. pointer-events-none
+          throughout — some browsers still hit-test a 3D-rotated element's
+          original bounding box even once backface-hidden makes it
+          invisible, which was silently blocking real clicks on the Enter
+          link underneath. */}
+      <div className="pointer-events-none absolute inset-0" style={{ perspective: 2600 }}>
         <motion.div
           className="absolute inset-0 flex items-center justify-center"
           style={{
