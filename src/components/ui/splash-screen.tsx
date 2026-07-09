@@ -1,9 +1,16 @@
 import { useEffect, useState } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
+import { motion } from 'framer-motion'
 
 const STORAGE_KEY = 'manusmrti-splash-seen'
-const AUTO_PART_DELAY = 2000
-const PART_DURATION = 0.8
+
+const COVER_DELAY = 0.5
+const COVER_DURATION = 1.5
+const QUOTE_DELAY = 1.5
+const QUOTE_DURATION = 1.1
+const LINK_DELAY = 2.3
+const LINK_DURATION = 1.0
+const AUTO_DISMISS_DELAY = 3600 // ms — a beat after the "Enter" link finishes fading in
+const DISMISS_DURATION = 0.4
 
 function isForced() {
   if (typeof window === 'undefined') return false
@@ -33,108 +40,91 @@ function markSeen() {
   }
 }
 
-// SVG turbulence filter for a faint parchment grain, referenced by both
-// page panels. Inline and tiny — no image request, so it costs nothing to
-// load.
-const grainFilter = (
-  <svg className="absolute h-0 w-0" aria-hidden="true">
-    <filter id="splash-grain">
-      <feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch" result="noise" />
-      <feColorMatrix in="noise" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.05 0" />
-    </filter>
-  </svg>
-)
-
-// First-visit splash: two parchment pages meet at a center seam with one
-// line of the book's thesis across them, then part like a manuscript
-// opening to reveal the homepage. Shown once only — gated on localStorage,
-// so direct links, search visitors, and repeat visits skip straight to the
-// homepage with no flash of the splash (the "should show" check runs
-// synchronously in the initial state, before first paint). Auto-parts after
-// ~2s; the "Enter the book" link lets anyone skip immediately. Built from
-// flat colour, brass rules, and an inline SVG grain filter — no new image
-// assets, so it adds no meaningful load weight. Append ?splash=1 to the URL
-// to force it to play for preview/testing — that path never touches
-// localStorage, so it doesn't affect the real seen-state.
+// First-visit splash: a closed cover, hinged at the left edge, swings open
+// (3D perspective + rotateY, backface hidden) to reveal a page beneath it
+// carrying the book's thesis, then the whole thing dismisses to the real
+// homepage. Shown once only — gated on localStorage, checked synchronously
+// before first paint, so returning visits, direct links, and search
+// traffic never see it. Auto-dismisses on its own timer; the "Enter the
+// book" link (visible once the cover has opened) lets anyone jump straight
+// to the homepage. Respects prefers-reduced-motion. Built entirely from the
+// site's existing fonts and flat colour — no new assets, so it adds no
+// meaningful load weight. Append ?splash=1 to the URL to force it to play
+// for preview — that path never touches localStorage.
 export function SplashScreen() {
   const [show] = useState(shouldShow)
   const [visible, setVisible] = useState(show)
-  const [parting, setParting] = useState(false)
+  const [dismissed, setDismissed] = useState(false)
 
   useEffect(() => {
     if (!show) return
     if (!isForced()) markSeen()
-    const timer = setTimeout(() => setParting(true), AUTO_PART_DELAY)
+    const timer = setTimeout(() => setDismissed(true), AUTO_DISMISS_DELAY)
     return () => clearTimeout(timer)
   }, [show])
 
-  if (!show) return null
-
-  const pageTransition = { duration: PART_DURATION, ease: [0.65, 0, 0.35, 1] as const }
+  if (!show || !visible) return null
 
   return (
-    <AnimatePresence>
-      {visible && (
-        <motion.div
-          className="fixed inset-0 z-[100] overflow-hidden bg-paper"
-          style={{ pointerEvents: parting ? 'none' : 'auto' }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.3, ease: 'easeOut' }}
+    <motion.div
+      className="fixed inset-0 z-[100] overflow-hidden bg-paper"
+      style={{ pointerEvents: dismissed ? 'none' : 'auto' }}
+      animate={{ opacity: dismissed ? 0 : 1 }}
+      transition={{ duration: DISMISS_DURATION, ease: 'easeOut' }}
+      onAnimationComplete={() => dismissed && setVisible(false)}
+    >
+      {/* Revealed page, underneath the cover */}
+      <div className="absolute inset-0 flex flex-col items-center justify-center px-8 text-center">
+        <div
+          className="pointer-events-none absolute inset-y-0 left-0 w-24 sm:w-36"
+          style={{ background: 'linear-gradient(90deg, rgba(42,33,24,0.16), rgba(42,33,24,0))' }}
+        />
+        <div className="pointer-events-none absolute inset-y-0 left-[88px] w-px bg-brass/35 sm:left-[138px]" />
+
+        <motion.p
+          className="mb-10 max-w-[32ch] font-display text-2xl italic leading-snug text-ink sm:text-3xl"
+          initial={{ opacity: 0, y: 14 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: QUOTE_DURATION, delay: QUOTE_DELAY, ease: 'easeOut' }}
         >
-          {grainFilter}
+          &ldquo;I spent years separating what Manu wrote from what was added later. This is what remained.&rdquo;
+        </motion.p>
 
-          {/* Left page */}
-          <motion.div
-            className="absolute inset-y-0 left-0 w-1/2 border-r border-brass/30 bg-paper-deep"
-            initial={{ x: 0 }}
-            animate={{ x: parting ? '-100%' : 0 }}
-            transition={pageTransition}
-            onAnimationComplete={() => parting && setVisible(false)}
-          >
-            <div className="absolute inset-0 opacity-70" style={{ filter: 'url(#splash-grain)' }} />
-            <div className="absolute inset-y-0 right-0 w-24 bg-gradient-to-l from-ink/15 to-transparent" />
-            <div className="absolute right-6 top-1/2 h-2/3 w-px -translate-y-1/2 bg-gradient-to-b from-transparent via-brass/50 to-transparent" />
-          </motion.div>
+        <motion.button
+          type="button"
+          onClick={() => setDismissed(true)}
+          className="border-b border-oxide pb-1 font-body text-[17px] italic tracking-[0.02em] text-oxide transition-colors hover:text-oxide-dark focus-visible:outline-2 focus-visible:outline-oxide"
+          initial={{ opacity: 0, y: 14 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: LINK_DURATION, delay: LINK_DELAY, ease: 'easeOut' }}
+        >
+          Enter the book &rarr;
+        </motion.button>
+      </div>
 
-          {/* Right page */}
-          <motion.div
-            className="absolute inset-y-0 right-0 w-1/2 border-l border-brass/30 bg-paper-deep"
-            initial={{ x: 0 }}
-            animate={{ x: parting ? '100%' : 0 }}
-            transition={pageTransition}
-          >
-            <div className="absolute inset-0 opacity-70" style={{ filter: 'url(#splash-grain)' }} />
-            <div className="absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-ink/15 to-transparent" />
-            <div className="absolute left-6 top-1/2 h-2/3 w-px -translate-y-1/2 bg-gradient-to-b from-transparent via-brass/50 to-transparent" />
-          </motion.div>
-
-          {/* Quote, centered across the seam */}
-          <motion.div
-            className="pointer-events-none absolute inset-0 flex items-center justify-center px-8"
-            initial={{ opacity: 1 }}
-            animate={{ opacity: parting ? 0 : 1 }}
-            transition={{ duration: 0.35, ease: 'easeOut' }}
-          >
-            <p className="max-w-xl text-center font-display text-xl italic leading-snug text-ink sm:text-2xl">
-              &ldquo;I spent years separating what Manu wrote from what was added later. This is what remained.&rdquo;
+      {/* Cover, hinged at the left edge, swings open */}
+      <div className="absolute inset-0" style={{ perspective: 2600 }}>
+        <motion.div
+          className="absolute inset-0 flex items-center justify-center"
+          style={{
+            transformOrigin: 'left center',
+            backfaceVisibility: 'hidden',
+            background: 'linear-gradient(135deg, #2A2118, #3B2C1D 60%, #2A2118)',
+            boxShadow: '60px 0 100px rgba(0,0,0,0.45)',
+          }}
+          initial={{ rotateY: 0 }}
+          animate={{ rotateY: -108 }}
+          transition={{ duration: COVER_DURATION, delay: COVER_DELAY, ease: [0.6, 0, 0.35, 1] }}
+        >
+          <div className="text-center text-paper">
+            <div className="mb-4 text-3xl text-brass-light opacity-90">ॐ</div>
+            <h1 className="font-display text-4xl font-semibold tracking-[0.01em] sm:text-5xl">Manusmṛti</h1>
+            <p className="mt-2.5 font-body text-sm uppercase tracking-[0.08em] text-brass-light">
+              Sañjay Mohan Mittal
             </p>
-          </motion.div>
-
-          {/* Skip option */}
-          {!parting && (
-            <motion.button
-              type="button"
-              onClick={() => setParting(true)}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.4, delay: 0.6 }}
-              className="absolute bottom-10 left-1/2 -translate-x-1/2 font-ui text-[13px] uppercase tracking-[0.16em] text-ink-soft transition-colors hover:text-oxide focus-visible:outline-2 focus-visible:outline-oxide"
-            >
-              Enter the book &rarr;
-            </motion.button>
-          )}
+          </div>
         </motion.div>
-      )}
-    </AnimatePresence>
+      </div>
+    </motion.div>
   )
 }
