@@ -9,7 +9,6 @@ const QUOTE_DELAY = 1.5
 const QUOTE_DURATION = 1.1
 const LINK_DELAY = 2.3
 const LINK_DURATION = 1.0
-const AUTO_DISMISS_DELAY = 3600 // ms — a beat after the "Enter" link finishes fading in
 const DISMISS_DURATION = 0.4
 
 function isForced() {
@@ -42,15 +41,14 @@ function markSeen() {
 
 // First-visit splash: a closed cover, hinged at the left edge, swings open
 // (3D perspective + rotateY, backface hidden) to reveal a page beneath it
-// carrying the book's thesis, then the whole thing dismisses to the real
-// homepage. Shown once only — gated on localStorage, checked synchronously
-// before first paint, so returning visits, direct links, and search
-// traffic never see it. Auto-dismisses on its own timer; the "Enter the
-// book" link (visible once the cover has opened) lets anyone jump straight
-// to the homepage. Respects prefers-reduced-motion. Built entirely from the
-// site's existing fonts and flat colour — no new assets, so it adds no
-// meaningful load weight. Append ?splash=1 to the URL to force it to play
-// for preview — that path never touches localStorage.
+// carrying the book's thesis. It waits there — the "Enter the book" link
+// (visible once the cover has opened) is the only way through; there's no
+// auto-dismiss timer. Shown once only — gated on localStorage, checked
+// synchronously before first paint, so returning visits, direct links, and
+// search traffic never see it. Respects prefers-reduced-motion. Built
+// entirely from the site's existing fonts and flat colour — no new assets,
+// so it adds no meaningful load weight. Append ?splash=1 to the URL to
+// force it to play for preview — that path never touches localStorage.
 export function SplashScreen() {
   const [show] = useState(shouldShow)
   const [visible, setVisible] = useState(show)
@@ -59,8 +57,6 @@ export function SplashScreen() {
   useEffect(() => {
     if (!show) return
     if (!isForced()) markSeen()
-    const timer = setTimeout(() => setDismissed(true), AUTO_DISMISS_DELAY)
-    return () => clearTimeout(timer)
   }, [show])
 
   if (!show || !visible) return null
