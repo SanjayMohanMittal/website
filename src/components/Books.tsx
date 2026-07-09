@@ -33,7 +33,7 @@ const books: Book[] = [
     title: 'Original Vedic Perspective',
     description:
       "Only the verses I could trace back to Manu's original teaching. If you want the source material, unclouded by later additions, this is where to begin.",
-    price: 'Kindle $9.99  ·  Paperback $22.99  ·  Hardcover $34.99',
+    price: 'Kindle $11.99  ·  Paperback $22.99  ·  Hardcover $34.99',
     coverSrc: '/images/cover-part1.jpg',
     coverAlt: 'Manusmṛti Part One: Original Vedic Perspective, book cover',
     amazonUrl: 'https://www.amazon.com/gp/product/B0H7YNBQXW?ref_=dbs_m_mng_rwt_calw_tpbk_1&storeType=ebooks',
@@ -44,7 +44,7 @@ const books: Book[] = [
     title: 'Interpolations',
     description:
       'A close look at the verses added centuries after Manu, what they changed, and why the distinction matters. Written for the reader who wants the fuller, more scholarly picture.',
-    price: 'Kindle $9.99  ·  Paperback $23.99  ·  Hardcover $35.99',
+    price: 'Kindle $11.99  ·  Paperback $23.99  ·  Hardcover $35.99',
     coverSrc: '/images/cover-part2.jpg',
     coverAlt: 'Manusmṛti Part Two: Interpolations, book cover',
     amazonUrl: 'https://www.amazon.com/gp/product/B0H7YRRYJD?ref_=dbs_m_mng_rwt_calw_tpbk_2&storeType=ebooks',

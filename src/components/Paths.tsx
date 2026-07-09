@@ -16,7 +16,12 @@ export function Paths() {
         <p className="text-ink-soft text-base mb-3.5">
           Start with the main volume for the full overview, written in plain modern English with nothing assumed.
         </p>
-        <a href="#books" className="font-ui text-sm font-semibold text-oxide hover:text-oxide-dark hover:underline">
+        <a
+          href="https://www.amazon.com/gp/product/B0H77J81YW?ref_=dbs_m_mng_rwt_calw_tpbk_0&storeType=ebooks"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="font-ui text-sm font-semibold text-oxide hover:text-oxide-dark hover:underline"
+        >
           Start with the main volume &rarr;
         </a>
       </div>
