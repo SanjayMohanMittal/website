@@ -6,7 +6,7 @@ export function About() {
   return (
     <motion.section
       id="about"
-      className="grid grid-cols-1 items-start gap-10 py-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16 lg:py-14"
+      className="grid grid-cols-1 items-center gap-10 py-10 lg:grid-cols-[1.1fr_0.9fr] lg:gap-16 lg:py-14"
       initial="hidden"
       whileInView="visible"
       viewport={fadeUpViewport}
