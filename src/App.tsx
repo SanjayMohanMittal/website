@@ -7,12 +7,12 @@ import { Paths } from '@/components/Paths'
 import { Footer } from '@/components/Footer'
 import { TempleBacking } from '@/components/TempleBacking'
 import { ManuscriptHero } from '@/components/ui/hero-section'
-import { BookIntro } from '@/components/ui/book-intro'
+import { SplashScreen } from '@/components/ui/splash-screen'
 
 function App() {
   return (
     <>
-      <BookIntro />
+      <SplashScreen />
       <div className="max-w-[1280px] mx-auto px-5 sm:px-6">
         <Nav />
 
