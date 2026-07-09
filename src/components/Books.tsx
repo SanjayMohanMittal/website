@@ -105,9 +105,10 @@ export function Books() {
         ))}
       </div>
 
-      <div className="mt-10 lg:mt-16">
+      <div className="mt-14 lg:mt-20">
         <Testimonial
           eyebrow="A reader on Ancient Wisdom for the Modern World"
+          pullQuote="It treats the reader with respect, treats the source text with integrity, and delivers ancient wisdom in a form you'll actually finish."
           paragraphs={[
             "This book solves a real problem… most editions of the Manusmṛti bury the reader in dense, chapter-by-chapter structure mixed with centuries of later additions, and you come away more confused than when you started. Sanjay's approach is refreshingly different. By presenting only the authentic, non-interpolated verses and reorganizing them thematically, he's created something a modern reader can actually sit down and engage with.",
             'What impressed me most is the balance he strikes. This is clearly a labor of serious scholarship… every verse is referenced back to its original verse number, so you can cross-check against any traditional edition, but it never reads like a dry academic exercise. Dropping the Sanskrit text was the right call for readability, while the verse references keep it honest and useful for deeper study.',
@@ -115,6 +116,8 @@ export function Books() {
             "Whether you're new to Hindu scripture or someone who has bounced off the Manusmṛti before because of impenetrable editions, this is the version to get. It treats the reader with respect, treats the source text with integrity, and delivers ancient wisdom in a form you'll actually finish. Highly recommended!",
           ]}
           name="Michael Evangelis"
+          coverSrc={books[0].coverSrc}
+          coverAlt={books[0].coverAlt}
         />
       </div>
     </motion.section>
