@@ -82,7 +82,7 @@ export function Books() {
               <img
                 src={book.coverSrc}
                 alt={book.coverAlt}
-                className="mx-auto mt-5 aspect-[2/3] w-32 rounded-md object-cover shadow-[0_20px_45px_-14px_rgba(42,33,24,0.45)] transition-[transform,box-shadow] duration-300 group-hover:-translate-y-1.5 group-hover:shadow-[0_28px_60px_-14px_rgba(42,33,24,0.55)]"
+                className="mx-auto mt-5 aspect-[2/3] w-48 rounded-md object-cover shadow-[0_20px_45px_-14px_rgba(42,33,24,0.45)] transition-[transform,box-shadow] duration-300 group-hover:-translate-y-1.5 group-hover:shadow-[0_28px_60px_-14px_rgba(42,33,24,0.55)]"
               />
               <h3 className="mt-6 font-display text-xl font-semibold">{book.title}</h3>
             </CardHeader>

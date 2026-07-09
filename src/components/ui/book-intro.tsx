@@ -1,17 +1,15 @@
 import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 
-// Page-load intro: the camera zooms in on the main volume's closed cover,
-// then it swings open on its spine (3D perspective + rotateY). Two things
-// happen together during the swing, not after it: the cover's own opacity
-// fades out as it thins, so it never sits as a hard, solid, isolated sliver
-// waiting to disappear, and the rotation runs on an even easing curve so
-// there's no stretch where it's nearly done but visually stalled. Only once
-// that swing has actually completed (onAnimationComplete, not a guessed
-// wall-clock delay) does the outer overlay itself fade to reveal the page —
-// so the reveal never overlaps a still-recognizable cover photo, and never
-// waits on a separate timer once the cover is already gone. Skips itself
-// entirely for prefers-reduced-motion.
+// Page-load intro: the camera eases in on the closed cover, then it swings
+// open on its spine (3D perspective + rotateY) to reveal the landing page
+// underneath. The cover's own opacity fades out during the last part of the
+// swing so it never sits as a hard, static sliver, and the overlay itself
+// only fades once the swing has actually finished (onAnimationComplete, not
+// a guessed wall-clock delay), so the reveal never overlaps a still-
+// recognizable cover. Kept to a modest scale on purpose — an oversized
+// portrait filling the whole screen read as aggressive rather than elegant.
+// Skips itself entirely for prefers-reduced-motion.
 export function BookIntro() {
   const [visible, setVisible] = useState(true)
   const [skip, setSkip] = useState(false)
@@ -32,12 +30,12 @@ export function BookIntro() {
         <motion.div
           className="fixed inset-0 z-[100] flex items-center justify-center bg-paper"
           exit={{ opacity: 0 }}
-          transition={{ duration: 0.25, ease: 'easeOut' }}
+          transition={{ duration: 0.3, ease: 'easeOut' }}
         >
           <motion.div
             initial={{ scale: 0.9 }}
-            animate={{ scale: 1.6 }}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            animate={{ scale: 1.7 }}
+            transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
           >
             <div className="[perspective:1600px]" style={{ width: 220, aspectRatio: '2 / 3' }}>
               <motion.div
@@ -45,7 +43,7 @@ export function BookIntro() {
                 style={{ transformOrigin: 'left center' }}
                 initial={{ rotateY: 0 }}
                 animate={{ rotateY: -100 }}
-                transition={{ duration: 0.5, delay: 0.25, ease: 'easeInOut' }}
+                transition={{ duration: 0.65, delay: 0.55, ease: 'easeInOut' }}
                 onAnimationComplete={() => setVisible(false)}
               >
                 {/* Front cover */}
@@ -54,7 +52,7 @@ export function BookIntro() {
                   style={{ backfaceVisibility: 'hidden' }}
                   initial={{ opacity: 1 }}
                   animate={{ opacity: 0 }}
-                  transition={{ duration: 0.3, delay: 0.45, ease: 'easeIn' }}
+                  transition={{ duration: 0.3, delay: 0.9, ease: 'easeIn' }}
                 >
                   <img src="/images/cover-main.jpg" alt="" className="h-full w-full object-cover" />
                 </motion.div>
@@ -65,7 +63,7 @@ export function BookIntro() {
                   style={{ transform: 'rotateY(90deg) translateZ(-6px)', transformOrigin: 'left center' }}
                   initial={{ opacity: 1 }}
                   animate={{ opacity: 0 }}
-                  transition={{ duration: 0.3, delay: 0.45, ease: 'easeIn' }}
+                  transition={{ duration: 0.3, delay: 0.9, ease: 'easeIn' }}
                 />
               </motion.div>
             </div>
