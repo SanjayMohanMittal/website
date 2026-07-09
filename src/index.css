@@ -1,0 +1,92 @@
+@import "tailwindcss";
+
+:root {
+  /* shadcn convention: raw HSL triplets, consumed as hsl(var(--x)) */
+  --background: 43.6 45.8% 90.6%;      /* paper */
+  --foreground: 30.0 27.3% 12.9%;      /* ink */
+
+  --primary: 9.4 52.7% 35.7%;          /* oxide */
+  --primary-foreground: 43.6 45.8% 90.6%; /* paper */
+
+  --secondary: 43.4 49.5% 81.4%;       /* paper-deep */
+  --secondary-foreground: 30.0 27.3% 12.9%; /* ink */
+
+  --muted: 43.4 49.5% 81.4%;           /* paper-deep */
+  --muted-foreground: 33.3 18.9% 28.0%; /* ink-soft */
+
+  --accent: 36.9 52.9% 43.3%;          /* brass */
+  --accent-foreground: 30.0 27.3% 12.9%; /* ink */
+
+  --destructive: 9.2 54.9% 27.8%;      /* oxide-dark */
+  --destructive-foreground: 43.6 45.8% 90.6%; /* paper */
+
+  --border: 43.0 30% 74.5%;
+  --input: 43.0 30% 74.5%;
+  --ring: 36.9 52.9% 43.3%;            /* brass */
+
+  --sage: 91.3 12.0% 37.5%;
+
+  --radius: 0.125rem;
+
+  --font-display: 'Fraunces', serif;
+  --font-body: 'Newsreader', serif;
+  --font-ui: 'Public Sans', sans-serif;
+}
+
+@theme inline {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  --color-sage: hsl(var(--sage));
+
+  /* named brand tokens, used directly by non-shadcn components */
+  --color-paper: #F2ECDC;
+  --color-paper-deep: #E7DAB8;
+  --color-paper-deeper: #DCCBA0;
+  --color-ink: #2A2118;
+  --color-ink-soft: #55493A;
+  --color-brass: #A97C34;
+  --color-brass-light: #C9A24D;
+  --color-oxide: #8B3A2B;
+  --color-oxide-dark: #6E2C20;
+
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+  --font-ui: var(--font-ui);
+
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+}
+
+html {
+  margin: 0;
+  padding: 0;
+  background: hsl(var(--background));
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  color: hsl(var(--foreground));
+  font-family: var(--font-body);
+  font-size: 18px;
+  line-height: 1.7;
+  background: hsl(var(--background));
+}
+
+* {
+  box-sizing: border-box;
+}
