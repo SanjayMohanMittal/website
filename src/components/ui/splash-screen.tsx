@@ -5,8 +5,18 @@ const STORAGE_KEY = 'manusmrti-splash-seen'
 const AUTO_PART_DELAY = 2000
 const PART_DURATION = 0.8
 
+function isForced() {
+  if (typeof window === 'undefined') return false
+  try {
+    return new URLSearchParams(window.location.search).get('splash') === '1'
+  } catch {
+    return false
+  }
+}
+
 function shouldShow() {
   if (typeof window === 'undefined') return false
+  if (isForced()) return true
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return false
   try {
     return window.localStorage.getItem(STORAGE_KEY) !== '1'
@@ -43,7 +53,9 @@ const grainFilter = (
 // synchronously in the initial state, before first paint). Auto-parts after
 // ~2s; the "Enter the book" link lets anyone skip immediately. Built from
 // flat colour, brass rules, and an inline SVG grain filter — no new image
-// assets, so it adds no meaningful load weight.
+// assets, so it adds no meaningful load weight. Append ?splash=1 to the URL
+// to force it to play for preview/testing — that path never touches
+// localStorage, so it doesn't affect the real seen-state.
 export function SplashScreen() {
   const [show] = useState(shouldShow)
   const [visible, setVisible] = useState(show)
@@ -51,7 +63,7 @@ export function SplashScreen() {
 
   useEffect(() => {
     if (!show) return
-    markSeen()
+    if (!isForced()) markSeen()
     const timer = setTimeout(() => setParting(true), AUTO_PART_DELAY)
     return () => clearTimeout(timer)
   }, [show])
