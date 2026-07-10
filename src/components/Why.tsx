@@ -20,7 +20,7 @@ export function Why() {
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-2 lg:gap-0 lg:divide-x lg:divide-brass/20">
           <div className="lg:pr-12">
             <p className="text-ink-soft mb-4">
-              According to Surendra Kumar&rsquo;s textual analysis, 1,288 of the 2,861 verses in circulation today trace back to Manu&rsquo;s original teaching, the rest added centuries later. This edition presents only that original core, and aims to make that scholarship legible to anyone, not just specialists.
+              Based on my own analysis, 1,288 of the 2,861 verses in circulation today trace back to Manu&rsquo;s original teaching, the rest added centuries later. This edition presents only that original core, and aims to make that work legible to anyone, not just specialists.
             </p>
             <p className="text-ink-soft mb-4">
               Religious Studies and South Asian Studies departments are welcome to request a review copy, or to invite me to speak. This is the angle I most want universities to know about.
