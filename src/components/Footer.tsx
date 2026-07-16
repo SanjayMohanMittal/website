@@ -34,7 +34,7 @@ export function Footer() {
           <a href="#" className="text-paper/70 hover:text-brass-light transition-colors">Press and media kit</a>
           <a href="#" className="text-paper/70 hover:text-brass-light transition-colors">Request a speaking engagement</a>
           <a href="#" className="text-paper/70 hover:text-brass-light transition-colors">Goodreads author page</a>
-          <a href="mailto:Sanjay_m_m@hotmail.com" className="text-paper/70 hover:text-brass-light transition-colors">Sanjay_m_m@hotmail.com</a>
+          <a href="mailto:sanjaymm@gmail.com" className="text-paper/70 hover:text-brass-light transition-colors">sanjaymm@gmail.com</a>
           <a href="tel:+12016942956" className="text-paper/70 hover:text-brass-light transition-colors">+1 (201) 694-2956</a>
         </div>
       </motion.div>

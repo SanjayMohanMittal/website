@@ -23,7 +23,7 @@ const books: Book[] = [
     title: 'Ancient Wisdom for the Modern World',
     description:
       'The complete overview, for readers meeting the Manusmṛti for the first time. Thematically reorganised so the ideas come through clearly, without losing a single reference back to the traditional text.',
-    price: 'Kindle $9.99  ·  Paperback $22.99',
+    price: 'Kindle $9.99  ·  Paperback $16.83',
     coverSrc: '/images/cover-main.jpg',
     coverAlt: 'Manusmṛti: Ancient Wisdom for the Modern World, book cover',
     amazonUrl: 'https://www.amazon.com/gp/product/B0H77J81YW?ref_=dbs_m_mng_rwt_calw_tpbk_0&storeType=ebooks',
