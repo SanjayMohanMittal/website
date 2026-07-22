@@ -1,8 +1,22 @@
 import { motion } from 'framer-motion'
 import { Button } from '@/components/ui/button'
-import { fadeUpVariants, fadeUpViewport } from '@/lib/motion'
+import { useFadeUpVariants, fadeUpViewport } from '@/lib/motion'
+import { useCountUp } from '@/lib/useCountUp'
+
+function Stat({ target, label }: { target: number; label: string }) {
+  const { ref, value } = useCountUp(target)
+  return (
+    <div className="space-y-3">
+      <div ref={ref} className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold tabular-nums text-oxide">
+        {value.toLocaleString()}
+      </div>
+      <p className="font-ui text-[13px] tracking-[0.02em] text-ink-soft">{label}</p>
+    </div>
+  )
+}
 
 export function Why() {
+  const fadeUpVariants = useFadeUpVariants()
   return (
     <motion.section
       id="why"
@@ -12,8 +26,7 @@ export function Why() {
       viewport={fadeUpViewport}
       variants={fadeUpVariants}
     >
-      <span className="font-ui text-[13px] tracking-[0.16em] uppercase text-sage">Why this edition</span>
-      <h2 className="font-display font-semibold text-[28px] lg:text-[34px] tracking-[-0.01em] mt-2.5 mb-8 max-w-2xl">
+      <h2 className="font-display italic font-semibold text-[30px] lg:text-[38px] tracking-[-0.01em] mb-8 max-w-2xl [text-wrap:balance]">
         Built for both the curious reader and the careful scholar.
       </h2>
       <div className="rounded-md border border-brass/20 bg-paper-deep px-6 py-10 sm:px-10 sm:py-12">
@@ -25,24 +38,16 @@ export function Why() {
             <p className="text-ink-soft mb-4">
               Religious Studies and South Asian Studies departments are welcome to request a review copy, or to invite me to speak. This is the angle I most want universities to know about.
             </p>
-            <a href="#">
-              <Button variant="outline" className="mt-2">Request a review copy</Button>
-            </a>
+            <Button asChild variant="outline" className="mt-2">
+              <a href="mailto:sanjaymm@gmail.com?subject=Review%20copy%20request%20-%20Manusmriti">
+                Request a review copy
+              </a>
+            </Button>
           </div>
           <div className="flex items-center lg:pl-12">
             <div className="grid grid-cols-2 gap-6 divide-x divide-oxide/15 *:text-center *:px-4">
-              <div className="space-y-3">
-                <div className="font-display text-5xl font-bold text-oxide">1,288</div>
-                <p className="font-ui text-[13px] tracking-[0.02em] text-ink-soft">
-                  authentic verses identified, out of 2,861 in common circulation
-                </p>
-              </div>
-              <div className="space-y-3">
-                <div className="font-display text-5xl font-bold text-oxide">3</div>
-                <p className="font-ui text-[13px] tracking-[0.02em] text-ink-soft">
-                  volumes, one continuous argument
-                </p>
-              </div>
+              <Stat target={1288} label="authentic verses identified, out of 2,861 in common circulation" />
+              <Stat target={3} label="volumes, one continuous argument" />
             </div>
           </div>
         </div>

@@ -1,9 +1,30 @@
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion, type Variants } from 'framer-motion'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Testimonial } from '@/components/ui/testimonial'
-import { fadeUpVariants, fadeUpViewport } from '@/lib/motion'
+import { useFadeUpVariants, fadeUpViewport } from '@/lib/motion'
+import { cn } from '@/lib/utils'
+
+// Nested under the section's own fadeUpVariants the same way hero-section.tsx
+// nests its stagger levels: no separate whileInView here, this inherits the
+// hidden/visible state from the ancestor motion.section that triggers it.
+const gridContainerVariants: Variants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.08 } },
+}
+const reducedGridContainerVariants: Variants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0 } },
+}
+const cardItemVariants: Variants = {
+  hidden: { opacity: 0, y: 16 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: 'easeOut' } },
+}
+const reducedCardItemVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { duration: 0.3, ease: 'easeOut' } },
+}
 
 interface Book {
   id: string
@@ -14,6 +35,10 @@ interface Book {
   coverSrc: string
   coverAlt: string
   amazonUrl: string
+  // Matches each cover's actual source pixel ratio (main is a true 2:3,
+  // parts one/two are printed slightly shorter) so object-cover never
+  // crops real cover art.
+  coverAspect: string
 }
 
 const books: Book[] = [
@@ -27,6 +52,7 @@ const books: Book[] = [
     coverSrc: '/images/cover-main.jpg',
     coverAlt: 'Manusmṛti: Ancient Wisdom for the Modern World, book cover',
     amazonUrl: 'https://www.amazon.com/gp/product/B0H77J81YW?ref_=dbs_m_mng_rwt_calw_tpbk_0&storeType=ebooks',
+    coverAspect: '2 / 3',
   },
   {
     id: 'part-one',
@@ -38,6 +64,7 @@ const books: Book[] = [
     coverSrc: '/images/cover-part1.jpg',
     coverAlt: 'Manusmṛti Part One: Original Vedic Perspective, book cover',
     amazonUrl: 'https://www.amazon.com/gp/product/B0H7YNBQXW?ref_=dbs_m_mng_rwt_calw_tpbk_1&storeType=ebooks',
+    coverAspect: '420 / 543',
   },
   {
     id: 'part-two',
@@ -49,10 +76,13 @@ const books: Book[] = [
     coverSrc: '/images/cover-part2.jpg',
     coverAlt: 'Manusmṛti Part Two: Interpolations, book cover',
     amazonUrl: 'https://www.amazon.com/gp/product/B0H7YRRYJD?ref_=dbs_m_mng_rwt_calw_tpbk_2&storeType=ebooks',
+    coverAspect: '420 / 543',
   },
 ]
 
 export function Books() {
+  const fadeUpVariants = useFadeUpVariants()
+  const shouldReduceMotion = useReducedMotion()
   return (
     <motion.section
       id="books"
@@ -63,47 +93,58 @@ export function Books() {
       variants={fadeUpVariants}
     >
       <div className="text-center">
-        <span className="font-ui text-[13px] tracking-[0.16em] uppercase text-sage">The books</span>
-        <h2 className="font-display font-semibold text-[28px] lg:text-[34px] tracking-[-0.01em] mt-2.5">
+        <h2 className="font-display font-bold text-[30px] lg:text-[38px] tracking-[-0.01em] [text-wrap:balance]">
           One story, told across three volumes.
         </h2>
-        <p className="text-ink-soft max-w-[60ch] mx-auto mt-2.5">
+        <p className="text-ink-soft max-w-[60ch] mx-auto mt-3">
           Start wherever your curiosity leads. Each volume stands on its own, and together they trace the full arc, from the authentic Vedic teaching, to what was added later, to why any of this still matters today.
         </p>
       </div>
 
-      <div className="mx-auto mt-10 grid max-w-sm gap-6 *:text-center md:mt-16 lg:max-w-full lg:grid-cols-3">
+      <motion.div
+        className="mx-auto mt-10 grid max-w-sm gap-6 *:text-center md:mt-16 md:max-w-2xl md:grid-cols-2 lg:max-w-full lg:grid-cols-[1.15fr_1fr_1fr] lg:items-start"
+        variants={shouldReduceMotion ? reducedGridContainerVariants : gridContainerVariants}
+      >
         {books.map((book) => (
-          <Card key={book.id} className="group border-brass/15 bg-paper-deep shadow-none">
-            <CardHeader className="pb-3">
-              <div>
-                <Badge>{book.badge}</Badge>
-              </div>
-              <img
-                src={book.coverSrc}
-                alt={book.coverAlt}
-                className="mx-auto mt-5 aspect-[2/3] w-48 rounded-md object-cover shadow-[0_20px_45px_-14px_rgba(42,33,24,0.45)] transition-[transform,box-shadow] duration-300 group-hover:-translate-y-1.5 group-hover:shadow-[0_28px_60px_-14px_rgba(42,33,24,0.55)]"
-              />
-              <h3 className="mt-6 font-display text-xl font-semibold">{book.title}</h3>
-            </CardHeader>
-            <CardContent>
-              <p className="text-sm text-ink-soft">{book.description}</p>
-              <div className="mt-5 flex flex-col items-center gap-3 font-ui text-sm">
-                <span className="font-semibold text-ink">{book.price}</span>
-                <a href={book.amazonUrl} target="_blank" rel="noopener noreferrer">
+          <motion.div key={book.id} variants={shouldReduceMotion ? reducedCardItemVariants : cardItemVariants}>
+            <Card
+              className={cn(
+                'group border-brass/15 bg-paper-deep shadow-none',
+                book.id === 'main' && 'lg:border-oxide/25',
+              )}
+            >
+              <CardHeader className="pb-3">
+                <div>
+                  <Badge className={cn(book.id === 'main' && '-rotate-3')}>{book.badge}</Badge>
+                </div>
+                <img
+                  src={book.coverSrc}
+                  alt={book.coverAlt}
+                  style={{ aspectRatio: book.coverAspect }}
+                  className="mx-auto mt-5 w-48 rounded-md object-cover shadow-[0_20px_45px_-14px_rgba(42,33,24,0.45)] transition-[transform,box-shadow] duration-300 group-hover:-translate-y-1.5 group-hover:shadow-[0_28px_60px_-14px_rgba(42,33,24,0.55)]"
+                />
+                <h3 className="mt-6 font-display text-xl font-semibold">{book.title}</h3>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-ink-soft">{book.description}</p>
+                <div className="mt-5 flex flex-col items-center gap-3 font-ui text-sm">
+                  <span className="font-semibold text-ink">{book.price}</span>
                   <Button
+                    asChild
                     variant="default"
                     size="sm"
                     className="transition-[transform,box-shadow] hover:-translate-y-0.5 hover:shadow-[0_10px_20px_-8px_rgba(139,58,43,0.55)]"
                   >
-                    Buy on Amazon
+                    <a href={book.amazonUrl} target="_blank" rel="noopener noreferrer">
+                      Buy on Amazon
+                    </a>
                   </Button>
-                </a>
-              </div>
-            </CardContent>
-          </Card>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
 
       <div className="mt-14 lg:mt-20">
         <Testimonial

@@ -39,9 +39,9 @@ function App() {
       <Excerpts />
 
       <div className="max-w-[1280px] mx-auto px-5 sm:px-6">
+        <Paths />
         <Books />
         <Why />
-        <Paths />
       </div>
 
       <Footer />

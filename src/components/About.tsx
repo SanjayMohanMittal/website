@@ -1,8 +1,9 @@
 import { motion } from 'framer-motion'
-import { fadeUpVariants, fadeUpViewport } from '@/lib/motion'
+import { useFadeUpVariants, fadeUpViewport } from '@/lib/motion'
 import { AnimatedQuote } from '@/components/ui/animated-quote'
 
 export function About() {
+  const fadeUpVariants = useFadeUpVariants()
   return (
     <motion.section
       id="about"
@@ -13,8 +14,7 @@ export function About() {
       variants={fadeUpVariants}
     >
       <div>
-        <span className="font-ui text-[13px] tracking-[0.16em] uppercase text-sage">About the author</span>
-        <h2 className="font-display font-semibold text-[28px] lg:text-[34px] tracking-[-0.01em] mt-2.5 mb-5">
+        <h2 className="font-display font-semibold text-[30px] lg:text-[38px] tracking-[-0.01em] mb-5 [text-wrap:balance]">
           A translation I wished existed when I went looking for one.
         </h2>
         <p className="text-ink-soft mb-4">
@@ -32,7 +32,7 @@ export function About() {
         <img
           src="/images/portrait.jpg"
           alt="Sañjay Mohan Mittal, author of the Manusmṛti trilogy, standing before an Om tapestry"
-          className="mx-auto block aspect-[4/5] w-full max-w-[440px] rounded-2xl object-cover shadow-[0_24px_60px_-16px_rgba(42,33,24,0.4)] sepia-[.08] lg:mx-0"
+          className="mx-auto block aspect-square w-full max-w-[440px] rounded-2xl object-cover shadow-[0_24px_60px_-16px_rgba(42,33,24,0.4)] sepia-[.08] lg:mx-0"
         />
       </div>
     </motion.section>

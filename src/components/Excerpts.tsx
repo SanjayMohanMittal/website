@@ -1,7 +1,8 @@
 import { motion } from 'framer-motion'
-import { fadeUpVariants, fadeUpViewport } from '@/lib/motion'
+import { useFadeUpVariants, fadeUpViewport } from '@/lib/motion'
 
 export function Excerpts() {
+  const fadeUpVariants = useFadeUpVariants()
   return (
     <section className="w-full bg-paper-deep">
       <motion.div
