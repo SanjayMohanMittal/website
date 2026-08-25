@@ -2,35 +2,36 @@
 
 :root {
   /* shadcn convention: raw HSL triplets, consumed as hsl(var(--x)) */
-  --background: 43.6 45.8% 90.6%;      /* paper */
-  --foreground: 30.0 27.3% 12.9%;      /* ink */
+  --background: 42 33% 92%;        /* manuscript paper */
+  --foreground: 30 12% 10%;        /* ink */
 
-  --primary: 9.4 52.7% 35.7%;          /* oxide */
-  --primary-foreground: 43.6 45.8% 90.6%; /* paper */
+  --primary: 5 55% 34%;            /* sindoor — the one resolved-claim accent */
+  --primary-foreground: 42 33% 95%;
 
-  --secondary: 43.4 49.5% 81.4%;       /* paper-deep */
-  --secondary-foreground: 30.0 27.3% 12.9%; /* ink */
+  --secondary: 40 24% 86%;         /* paper, one step deeper */
+  --secondary-foreground: 30 12% 10%;
 
-  --muted: 43.4 49.5% 81.4%;           /* paper-deep */
-  --muted-foreground: 33.3 18.9% 28.0%; /* ink-soft */
+  --muted: 40 24% 86%;
+  --muted-foreground: 32 16% 30%;  /* apparatus ink */
 
-  --accent: 36.9 52.9% 43.3%;          /* brass */
-  --accent-foreground: 30.0 27.3% 12.9%; /* ink */
+  --accent: 32 22% 30%;            /* olive-bronze apparatus ink */
+  --accent-foreground: 42 33% 95%;
 
-  --destructive: 9.2 54.9% 27.8%;      /* oxide-dark */
-  --destructive-foreground: 43.6 45.8% 90.6%; /* paper */
+  --destructive: 5 55% 28%;
+  --destructive-foreground: 42 33% 95%;
 
-  --border: 43.0 30% 74.5%;
-  --input: 43.0 30% 74.5%;
-  --ring: 36.9 52.9% 43.3%;            /* brass */
-
-  --sage: 91.3 12.0% 37.5%;
+  --border: 34 16% 74%;
+  --input: 34 16% 74%;
+  --ring: 5 55% 34%;
 
   --radius: 0.125rem;
 
-  --font-display: 'Fraunces', serif;
-  --font-body: 'Newsreader', serif;
-  --font-ui: 'Public Sans', sans-serif;
+  --font-text: 'STIX Two Text', 'Georgia', serif;
+  /* labels, nav, prices, captions, and verse refs used to run in Fragment
+     Mono; it read as robotic against the rest of the page, so the data
+     role now runs in the same serif, distinguished by size, weight, and
+     tracking instead of a second, colder family. */
+  --font-data: 'STIX Two Text', 'Georgia', serif;
 }
 
 @theme inline {
@@ -49,22 +50,21 @@
   --color-border: hsl(var(--border));
   --color-input: hsl(var(--input));
   --color-ring: hsl(var(--ring));
-  --color-sage: hsl(var(--sage));
 
-  /* named brand tokens, used directly by non-shadcn components */
-  --color-paper: #F2ECDC;
-  --color-paper-deep: #E7DAB8;
-  --color-paper-deeper: #DCCBA0;
-  --color-ink: #2A2118;
-  --color-ink-soft: #55493A;
-  --color-brass: #A97C34;
-  --color-brass-light: #C9A24D;
-  --color-oxide: #8B3A2B;
-  --color-oxide-dark: #6E2C20;
+  /* named brand tokens, used directly by non-shadcn components.
+     Warmed to match the generated photography (amber/umber/firelight)
+     instead of the cooler cream-and-olive of the earlier apparatus world. */
+  --color-paper: #F0E1BC;
+  --color-paper-deep: #E4C98F;
+  --color-ink: #241809;
+  --color-ink-soft: #5A4526;
+  --color-olive: #7A5528;
+  --color-sindoor: #8B2E22;
+  --color-sindoor-dark: #6E2419;
+  --color-gold: #A6832E;
 
-  --font-display: var(--font-display);
-  --font-body: var(--font-body);
-  --font-ui: var(--font-ui);
+  --font-text: var(--font-text);
+  --font-data: var(--font-data);
 
   --radius-lg: var(--radius);
   --radius-md: calc(var(--radius) - 2px);
@@ -76,6 +76,14 @@ html {
   padding: 0;
   background: hsl(var(--background));
   scroll-behavior: smooth;
+  /* CSS scroll-snap was fighting the hero's own 200vh scroll-driven reveal:
+     with two snap points close together (the hero's own top and the static
+     section right after it), proximity snapping would repeatedly pull the
+     page back toward the hero, so a reader had to scroll several times to
+     break free into the next section. The pinned reveal doesn't need
+     snapping to work (it's driven entirely by position:sticky + JS), so
+     snapping is off entirely rather than tuned again. */
+  scroll-snap-type: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -84,16 +92,93 @@ html {
   }
 }
 
+/* infinite marquee: track holds the item list doubled, animated to -50%
+   so the loop point is invisible. Paused on hover and under
+   prefers-reduced-motion so it never fights a reader trying to read it. */
+.marquee-viewport {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll var(--marquee-duration, 60s) linear infinite;
+}
+.marquee-viewport:hover .marquee-track {
+  animation-play-state: paused;
+}
+@keyframes marquee-scroll {
+  to {
+    transform: translateX(-50%);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+  }
+  .marquee-viewport {
+    overflow-x: auto;
+  }
+}
+
 body {
   margin: 0;
   padding: 0;
   color: hsl(var(--foreground));
-  font-family: var(--font-body);
+  font-family: var(--font-text);
   font-size: 18px;
   line-height: 1.7;
-  background: hsl(var(--background));
+  background:
+    radial-gradient(ellipse 900px 500px at 15% 0%, rgba(139, 46, 34, 0.06), transparent 60%),
+    radial-gradient(ellipse 700px 600px at 100% 40%, rgba(166, 131, 46, 0.08), transparent 55%),
+    hsl(var(--background));
+}
+
+/* keeps a section's own heading clear of the fixed nav when a scroll-snap
+   point docks it near the top of the viewport */
+.snap-start {
+  scroll-margin-top: 84px;
+}
+
+/* a faint paper grain so content sections read as material, not flat color */
+.grain {
+  position: relative;
+}
+.grain::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
 * {
   box-sizing: border-box;
+}
+
+::selection {
+  background: var(--color-sindoor);
+  color: var(--color-paper);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-sindoor);
+  outline-offset: 3px;
+}
+
+/* tabular numerals for verse counts / stats set in the data face */
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* scroll-snap mock — scoped so it never touches the real site */
+.snap-wrap {
+  scroll-snap-type: y mandatory;
+}
+.snap-wrap > * {
+  scroll-snap-align: start;
+  min-height: 100vh;
 }

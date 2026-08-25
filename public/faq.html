@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FAQ — Sañjay Mohan Mittal</title>
+  <meta name="description" content="Frequently asked questions about the Manusmṛti trilogy: which volume to start with, formats and pricing, the textual analysis behind it, and how to get in touch.">
+  <link rel="icon" type="image/png" href="/brand/favicon-on-cream.png" />
+  <link rel="stylesheet" href="/legal.css">
+</head>
+<body>
+  <header class="site-bar">
+    <a href="/"><img src="/brand/smm-icon-on-light.svg" alt="" /></a>
+    <a href="/" class="wordmark">Sañjay Mohan Mittal</a>
+  </header>
+  <main>
+    <h1>Questions, answered.</h1>
+    <p class="updated">On the Manusmṛti trilogy, and everything around it</p>
+
+    <div class="faq-list" id="faq-list"></div>
+
+    <div class="faq-contact">
+      <p class="t">Still have a question?</p>
+      <p class="d">Send it directly and it'll reach Sañjay.</p>
+      <a class="btn" href="mailto:sanjaymm@gmail.com?subject=Question%20about%20the%20Manusm%E1%B9%9Bti">Ask a question</a>
+    </div>
+
+    <a class="home-link" href="/">&larr; Back to the homepage</a>
+  </main>
+
+  <script>
+    const QUESTIONS = [
+      {
+        q: 'Which volume should I start with?',
+        a: "The main volume, if you're meeting the Manusmṛti for the first time — it's the complete overview, thematically reorganised and written in plain modern English. Part One is for readers who want only the source verses, unclouded by anything added later. Part Two is for readers specifically researching the interpolations themselves.",
+      },
+      {
+        q: 'What is an "interpolation"?',
+        a: "A verse added to the Manusmṛti centuries after Manu's original teaching, rather than part of what he actually wrote. Of the 2,861 verses in common circulation today, this translation identifies 1,288 as authentic to Manu's original text.",
+      },
+      {
+        q: 'How were the authentic verses identified?',
+        a: "Through ten years of Sañjay Mohan Mittal's own textual analysis, cross-referencing the verses in common circulation against the original Vedic source material verse by verse.",
+      },
+      {
+        q: 'Is there a Hindi edition?',
+        a: 'Yes — the main volume, Ancient Wisdom for the Modern World, is also available in Hindi on Amazon.',
+      },
+      {
+        q: 'What formats are available?',
+        a: "All three volumes are available in Kindle and paperback; Part One and Part Two are also available in hardcover. Exact current pricing is shown on each volume's card on the homepage and confirmed at checkout on Amazon.",
+      },
+      {
+        q: 'Is this translation backed by any institution?',
+        a: 'Yes — the trilogy is backed by the New Jersey Aarya Samaj Mandir, which reviewed and endorsed the translation project.',
+      },
+      {
+        q: 'Can I book a call with the author?',
+        a: 'Yes — use "Book a call" on the homepage for collaborations, podcasts, press, or general questions about the trilogy.',
+      },
+      {
+        q: 'Do you offer priest services or Sanskrit teaching?',
+        a: 'Yes — Sañjay performs traditional Vedic ceremonies and rites as a priest, and teaches Sanskrit and Vedic studies to children. Use "Get in touch" on the homepage.',
+      },
+    ]
+
+    const chevronSvg = '<svg class="chevron" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M5 7.5L10 12.5L15 7.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>'
+
+    const list = document.getElementById('faq-list')
+    QUESTIONS.forEach((item, i) => {
+      const wrap = document.createElement('div')
+      wrap.className = 'faq-item'
+
+      const btn = document.createElement('button')
+      btn.className = 'q'
+      btn.type = 'button'
+      btn.setAttribute('aria-expanded', 'false')
+      btn.id = 'faq-q-' + i
+      const panelId = 'faq-a-' + i
+      btn.setAttribute('aria-controls', panelId)
+      btn.innerHTML = '<span>' + item.q + '</span>' + chevronSvg
+
+      const panel = document.createElement('div')
+      panel.className = 'panel'
+      panel.id = panelId
+      panel.setAttribute('role', 'region')
+      panel.setAttribute('aria-labelledby', btn.id)
+      panel.innerHTML = '<div class="panel-inner"><p class="a">' + item.a + '</p></div>'
+
+      btn.addEventListener('click', () => {
+        const isOpen = wrap.classList.toggle('open')
+        btn.setAttribute('aria-expanded', String(isOpen))
+      })
+
+      wrap.appendChild(btn)
+      wrap.appendChild(panel)
+      list.appendChild(wrap)
+    })
+  </script>
+</body>
+</html>

@@ -1,0 +1,223 @@
+@import url('https://fonts.googleapis.com/css2?family=STIX+Two+Text:ital,wght@0,400..700;1,400..700&display=swap');
+
+:root {
+  --paper: #F0E1BC;
+  --paper-deep: #E4C98F;
+  --ink: #241809;
+  --ink-soft: #5A4526;
+  --olive: #7A5528;
+  --sindoor: #8B2E22;
+  --sindoor-dark: #6E2419;
+  --gold: #A6832E;
+}
+
+* { box-sizing: border-box; }
+
+html {
+  background: var(--paper);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'STIX Two Text', Georgia, serif;
+  color: var(--ink-soft);
+  font-size: 17px;
+  line-height: 1.7;
+  background: var(--paper);
+}
+
+::selection {
+  background: var(--sindoor);
+  color: var(--paper);
+}
+
+:focus-visible {
+  outline: 2px solid var(--sindoor);
+  outline-offset: 3px;
+}
+
+a {
+  color: var(--sindoor);
+  text-decoration-color: rgba(139, 46, 34, 0.4);
+  text-underline-offset: 3px;
+}
+a:hover {
+  text-decoration-color: var(--sindoor);
+}
+
+header.site-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 18px 24px;
+  border-bottom: 1px solid rgba(122, 85, 40, 0.2);
+}
+header.site-bar img { height: 32px; width: 32px; }
+header.site-bar .wordmark {
+  font-size: 16px;
+  color: var(--ink);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+main {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 56px 24px 96px;
+}
+
+h1 {
+  font-weight: 500;
+  font-size: clamp(28px, 4vw, 38px);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+  margin: 0 0 8px;
+}
+
+.updated {
+  font-family: 'STIX Two Text', Georgia, serif;
+  font-size: 13px;
+  letter-spacing: 0.03em;
+  color: var(--olive);
+  margin: 0 0 40px;
+}
+
+h2 {
+  font-weight: 500;
+  font-size: 21px;
+  color: var(--ink);
+  margin: 40px 0 12px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(122, 85, 40, 0.2);
+}
+
+h2:first-of-type {
+  border-top: none;
+  padding-top: 0;
+}
+
+p { margin: 0 0 16px; }
+ul { margin: 0 0 16px; padding-left: 22px; }
+li { margin-bottom: 6px; }
+
+.error-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 24px;
+}
+.error-page .n {
+  font-size: clamp(64px, 12vw, 118px);
+  font-weight: 500;
+  color: var(--ink);
+  line-height: 1;
+  margin: 0 0 16px;
+}
+.error-page p {
+  max-width: 46ch;
+  color: var(--ink-soft);
+}
+.error-page a.home-link {
+  margin-top: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  padding: 0 28px;
+  background: var(--sindoor);
+  color: var(--paper);
+  text-decoration: none;
+  border-radius: 2px;
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  transition: background-color 150ms ease-out;
+}
+.error-page a.home-link:hover { background: var(--sindoor-dark); }
+
+/* FAQ accordion — button + max-height transition (no framework), chevron
+   rotates open/closed like the reference pattern, restyled to the brand
+   palette instead of shadcn's default muted/primary tokens. */
+.faq-list {
+  border-top: 1px solid rgba(122, 85, 40, 0.2);
+}
+.faq-item {
+  border-bottom: 1px solid rgba(122, 85, 40, 0.2);
+}
+.faq-item button.q {
+  width: 100%;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: 'STIX Two Text', Georgia, serif;
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--ink);
+  text-align: left;
+}
+.faq-item .chevron {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  color: var(--olive);
+  transition: transform 200ms ease-out, color 200ms ease-out;
+}
+.faq-item.open .chevron { transform: rotate(180deg); color: var(--sindoor); }
+.faq-item .panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 220ms ease-out;
+}
+.faq-item.open .panel { grid-template-rows: 1fr; }
+.faq-item .panel-inner { overflow: hidden; }
+.faq-item .a {
+  margin: 0 0 20px;
+  max-width: 65ch;
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--ink-soft);
+}
+
+.faq-contact {
+  max-width: 420px;
+  margin: 48px auto 0;
+  padding: 28px;
+  text-align: center;
+  border: 1px solid rgba(122, 85, 40, 0.25);
+  border-radius: 4px;
+  background: rgba(228, 201, 143, 0.3);
+}
+.faq-contact p.t { margin: 0 0 4px; color: var(--ink); font-weight: 500; }
+.faq-contact p.d { margin: 0 0 16px; font-size: 14px; color: var(--ink-soft); }
+.faq-contact a.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  padding: 0 24px;
+  background: var(--sindoor);
+  color: var(--paper);
+  text-decoration: none;
+  border-radius: 2px;
+  font-size: 13px;
+  transition: background-color 150ms ease-out;
+}
+.faq-contact a.btn:hover { background: var(--sindoor-dark); }
+
+main a.home-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 40px;
+  color: var(--sindoor);
+  font-size: 14px;
+}
