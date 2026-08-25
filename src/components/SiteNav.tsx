@@ -38,7 +38,9 @@ export function SiteNav() {
   }, [])
 
   return (
-    <div
+    <nav
+      id="top"
+      aria-label="Chapter navigation"
       className="fixed inset-x-0 top-0 z-50 flex items-center justify-between px-4 py-3.5 sm:px-8 sm:py-[18px]"
       style={{
         fontFamily: "'STIX Two Text', Georgia, serif",
@@ -58,13 +60,15 @@ export function SiteNav() {
           <a
             key={c.n}
             href={c.href}
+            aria-current={i === active ? 'true' : undefined}
+            aria-label={`${c.label}, chapter ${c.n}`}
             style={{ color: 'inherit', textDecoration: 'none', opacity: i === active ? 1 : 0.45, transition: 'opacity 300ms ease-out' }}
           >
-            <span className="sm:hidden">{c.n}</span>
+            <span className="sm:hidden" aria-hidden="true">{c.n}</span>
             <span className="hidden sm:inline">{c.label}</span>
           </a>
         ))}
       </div>
-    </div>
+    </nav>
   )
 }

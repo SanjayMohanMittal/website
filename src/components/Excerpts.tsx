@@ -1,4 +1,6 @@
+import { useState } from 'react'
 import { motion } from 'framer-motion'
+import { Pause, Play } from 'lucide-react'
 import { useFadeUpVariants, fadeUpViewport } from '@/lib/motion'
 
 const excerpts = [
@@ -59,6 +61,7 @@ const excerpts = [
 export function Excerpts() {
   const fadeUpVariants = useFadeUpVariants()
   const track = [...excerpts, ...excerpts]
+  const [paused, setPaused] = useState(false)
   return (
     <section className="grain snap-start w-full bg-ink">
       <motion.div
@@ -68,11 +71,26 @@ export function Excerpts() {
         viewport={fadeUpViewport}
         variants={fadeUpVariants}
       >
-        <h2 className="mx-auto max-w-[1280px] px-5 font-text text-[28px] font-medium leading-[1.15] tracking-[-0.01em] text-paper [text-wrap:balance] sm:px-6 lg:text-[34px]">
-          Primary sources, quoted exactly.
-        </h2>
+        <div className="mx-auto flex max-w-[1280px] items-baseline justify-between gap-6 px-5 sm:px-6">
+          <h2 className="font-text text-[28px] font-medium leading-[1.15] tracking-[-0.01em] text-paper [text-wrap:balance] lg:text-[34px]">
+            Primary sources, quoted exactly.
+          </h2>
+          <button
+            type="button"
+            onClick={() => setPaused((p) => !p)}
+            aria-pressed={paused}
+            aria-label={paused ? 'Play scrolling quotes' : 'Pause scrolling quotes'}
+            className="flex shrink-0 items-center gap-2 rounded-sm border border-paper/20 px-3 py-1.5 font-data text-[12px] text-paper/70 transition-colors hover:border-paper/40 hover:text-paper"
+          >
+            {paused ? <Play className="h-3.5 w-3.5" aria-hidden="true" /> : <Pause className="h-3.5 w-3.5" aria-hidden="true" />}
+            {paused ? 'Play' : 'Pause'}
+          </button>
+        </div>
         <div className="marquee-viewport mt-12" style={{ '--marquee-duration': '110s' } as React.CSSProperties}>
-          <div className="marquee-track items-start gap-6 pl-5 sm:gap-8 sm:pl-6">
+          <div
+            className="marquee-track items-start gap-6 pl-5 sm:gap-8 sm:pl-6"
+            style={paused ? { animationPlayState: 'paused' } : undefined}
+          >
             {track.map((excerpt, i) => (
               <figure
                 key={`${excerpt.ref}-${i}`}

@@ -14,6 +14,7 @@ const EXPLORE_LINKS = [
 const LEGAL_LINKS = [
   { label: 'Privacy Policy', href: '/privacy-policy.html' },
   { label: 'Terms of Use', href: '/terms.html' },
+  { label: 'Accessibility', href: '/accessibility.html' },
 ]
 
 export function Footer() {

@@ -12,18 +12,26 @@ function App() {
   return (
     <>
       <Analytics />
+      <a
+        href="#main"
+        className="fixed left-4 top-4 z-[100] -translate-y-24 rounded-sm bg-sindoor px-4 py-2 font-data text-[13px] text-paper transition-transform focus-visible:translate-y-0"
+      >
+        Skip to main content
+      </a>
       <SiteNav />
-      <Record />
-      <Trilogy />
-      <Excerpts />
-      <Facets />
+      <main id="main">
+        <Record />
+        <Trilogy />
+        <Excerpts />
+        <Facets />
 
-      <div className="mx-auto max-w-[1280px] px-5 pb-14 sm:px-6 lg:pb-20">
-        <Pathway />
-        <div className="mt-14">
-          <Testimonial />
+        <div className="mx-auto max-w-[1280px] px-5 pb-14 sm:px-6 lg:pb-20">
+          <Pathway />
+          <div className="mt-14">
+            <Testimonial />
+          </div>
         </div>
-      </div>
+      </main>
 
       <Footer />
     </>
