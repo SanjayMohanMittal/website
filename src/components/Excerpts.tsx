@@ -6,7 +6,7 @@ import { useFadeUpVariants, fadeUpViewport } from '@/lib/motion'
 const excerpts = [
   {
     text: 'It is said that where women are honored, noble and divine qualities flourish; where they are dishonored, even well-intentioned efforts fail to bear fruit. A household in which women live in sorrow is believed to decline, while one in which they are content is said to prosper.',
-    ref: 'Manusmṛti 3:56–3:58',
+    ref: 'Manusmṛti 3:55–3:59',
     theme: 'on honoring women',
   },
   {
