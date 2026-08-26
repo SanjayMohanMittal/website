@@ -74,12 +74,12 @@ export function Footer() {
           </nav>
         </div>
         <div className="mt-8 flex flex-col gap-3 border-t border-paper/10 pt-6 sm:flex-row sm:items-center sm:justify-between">
-          <p className="font-data text-[11.5px] text-paper/40">
+          <p className="font-data text-[11.5px] text-paper/65">
             &copy; {new Date().getFullYear()} Sañjay Mohan Mittal.
           </p>
           <div className="flex gap-5 font-data text-[11.5px]">
             {LEGAL_LINKS.map((link) => (
-              <a key={link.href} href={link.href} className="text-paper/40 transition-colors hover:text-gold">
+              <a key={link.href} href={link.href} className="text-paper/65 transition-colors hover:text-gold">
                 {link.label}
               </a>
             ))}
