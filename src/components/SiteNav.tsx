@@ -53,7 +53,12 @@ export function SiteNav() {
     >
       <a href="#top" className="flex shrink-0 items-center gap-2.5 sm:gap-[10px]">
         <img src="/brand/smm-icon-on-dark.svg" alt="" aria-hidden="true" className="h-8 w-8 sm:h-10 sm:w-10" />
-        <img src="/brand/smm-wordmark-on-dark.svg" alt="Sañjay Mohan Mittal" className="h-5 sm:h-[27px]" />
+        <div className="flex flex-col">
+          <img src="/brand/smm-wordmark-on-dark.svg" alt="Sañjay Mohan Mittal" className="h-5 sm:h-[27px]" />
+          <span className="hidden font-data text-[10px] tracking-[0.03em] text-paper/55 sm:block">
+            Author of the Manusmṛti
+          </span>
+        </div>
       </a>
       <div className="flex gap-4 text-xs tracking-[0.06em] whitespace-nowrap sm:gap-7">
         {CHAPTERS.map((c, i) => (

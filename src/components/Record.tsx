@@ -11,7 +11,7 @@ export function Record() {
         n="01"
         label="THE RECORD"
         headline="What was offered, and what remains."
-        subtext="Thirty years spent deciding what belongs in a system. Ten of them spent deciding what belongs in a verse."
+        subtext="More than two decades with the Arya Samaj. Spent separating what Manu wrote from what came later."
         imageSrc="/images/havan-hero.jpg"
         imageAlt="A havan altar at dawn beneath the moon, embers rising"
         showScrollPrompt
@@ -75,7 +75,7 @@ export function Record() {
             </div>
 
             <p className="mt-8 max-w-[70ch] border-t border-olive/20 pt-6 font-text text-[16px] italic leading-[1.6] text-olive">
-              Ten years of that work are bound in the three volumes below.
+              That work is bound in the three volumes below.
             </p>
           </div>
         </div>

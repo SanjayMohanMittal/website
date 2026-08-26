@@ -22,7 +22,7 @@ export const volumes: Volume[] = [
     title: 'Ancient Wisdom for the Modern World',
     description:
       "The complete overview, for readers meeting the Manusmṛti for the first time. Thematically reorganised so the ideas come through clearly, with every one still referenced back to its source verse.",
-    price: 'Kindle $9.99 · Paperback $16.83',
+    price: 'Kindle $9.99 · Paperback from $15.96',
     coverSrc: '/images/cover-main.jpg',
     coverAlt: 'Manusmṛti: Ancient Wisdom for the Modern World, book cover',
     amazonUrl: 'https://www.amazon.com/gp/product/B0H77J81YW?ref_=dbs_m_mng_rwt_calw_tpbk_0&storeType=ebooks',
@@ -116,11 +116,10 @@ function VolumeCards() {
 function Stats() {
   const verses = useCountUp(1288)
   const volumeCount = useCountUp(3)
-  const years = useCountUp(10)
   return (
     <div className="mt-14 rounded-sm border border-olive/20 bg-paper-deep/30 px-6 py-10 sm:px-10 sm:py-12">
-      <div className="grid grid-cols-1 divide-y divide-olive/20 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
-        <div className="pb-8 sm:px-8 sm:pb-0 sm:first:pl-0">
+      <div className="grid grid-cols-1 divide-y divide-olive/20 sm:grid-cols-2 sm:divide-x sm:divide-y-0">
+        <div className="pb-8 sm:pr-8 sm:pb-0">
           <span className="block h-[3px] w-8 bg-sindoor" aria-hidden="true" />
           <div ref={verses.ref} className="tabular mt-4 font-text text-5xl font-medium leading-none text-ink sm:text-6xl">
             {verses.value.toLocaleString()}
@@ -129,22 +128,13 @@ function Stats() {
             authentic verses identified, out of 2,861 in common circulation
           </p>
         </div>
-        <div className="py-8 sm:px-8 sm:py-0">
+        <div className="pt-8 sm:pl-8 sm:pt-0">
           <span className="block h-[3px] w-8 bg-sindoor" aria-hidden="true" />
           <div ref={volumeCount.ref} className="tabular mt-4 font-text text-5xl font-medium leading-none text-ink sm:text-6xl">
             {volumeCount.value}
           </div>
           <p className="mt-3 font-data text-[12px] leading-relaxed text-olive">
             volumes, one continuous argument
-          </p>
-        </div>
-        <div className="pt-8 sm:px-8 sm:pt-0 sm:last:pr-0">
-          <span className="block h-[3px] w-8 bg-sindoor" aria-hidden="true" />
-          <div ref={years.ref} className="tabular mt-4 font-text text-5xl font-medium leading-none text-ink sm:text-6xl">
-            {years.value}
-          </div>
-          <p className="mt-3 font-data text-[12px] leading-relaxed text-olive">
-            years of textual analysis behind the three volumes
           </p>
         </div>
       </div>
@@ -160,7 +150,7 @@ export function Trilogy() {
         id="trilogy"
         n="02"
         label="THE TRILOGY"
-        headline="Ten years, bound in three volumes."
+        headline="One argument, bound in three volumes."
         imageSrc="/images/chapter-trilogy.jpg"
         imageAlt="Three leather-bound books resting on the steps of a havan altar at dawn"
       />
