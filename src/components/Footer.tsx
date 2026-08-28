@@ -85,6 +85,18 @@ export function Footer() {
             ))}
           </div>
         </div>
+        <p className="mt-4 font-data text-[11px] text-paper/65">
+          Designed by{' '}
+          <a
+            href="https://throughline.community/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline decoration-paper/30 underline-offset-2 transition-colors hover:text-gold"
+          >
+            Throughline Co
+          </a>{' '}
+          · Riya Mittal
+        </p>
       </div>
       </footer>
     </>
