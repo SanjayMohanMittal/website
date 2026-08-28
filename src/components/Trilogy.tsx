@@ -12,7 +12,7 @@ export interface Volume {
   coverSrc: string
   coverAlt: string
   amazonUrl: string
-  hindiUrl?: string
+  otherEditions?: { label: string; url: string }[]
 }
 
 export const volumes: Volume[] = [
@@ -26,7 +26,10 @@ export const volumes: Volume[] = [
     coverSrc: '/images/cover-main.jpg',
     coverAlt: 'Manusmṛti: Ancient Wisdom for the Modern World, book cover',
     amazonUrl: 'https://www.amazon.com/gp/product/B0H77J81YW?ref_=dbs_m_mng_rwt_calw_tpbk_0&storeType=ebooks',
-    hindiUrl: 'https://www.amazon.com/gp/product/B0HBZCXCXL?ref_=dbs_m_mng_rwt_calw_tkin_3&storeType=ebooks',
+    otherEditions: [
+      { label: 'Hindi', url: 'https://www.amazon.com/gp/product/B0HBZCXCXL?ref_=dbs_m_mng_rwt_calw_tkin_3&storeType=ebooks' },
+      { label: 'Gujarati', url: 'https://www.amazon.com/dp/B0HGSNCJFS' },
+    ],
   },
   {
     id: 'part-one',
@@ -54,6 +57,7 @@ export const volumes: Volume[] = [
 
 function VolumeCards() {
   const shouldReduceMotion = useReducedMotion()
+  const maxEditions = Math.max(...volumes.map((vol) => vol.otherEditions?.length ?? 0))
 
   return (
     <div className="grid grid-cols-1 gap-6 sm:grid-cols-3 sm:gap-8">
@@ -94,18 +98,22 @@ function VolumeCards() {
             >
               Buy on Amazon
             </a>
-            {v.hindiUrl ? (
-              <a
-                href={v.hindiUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-2 text-center font-data text-[11px] text-olive underline decoration-olive/40 underline-offset-4 transition-colors hover:text-sindoor hover:decoration-sindoor/60"
-              >
-                Also available in Hindi &rarr;
-              </a>
-            ) : (
-              <span className="mt-2 block h-[17px]" aria-hidden="true" />
-            )}
+            {Array.from({ length: maxEditions }).map((_, editionIndex) => {
+              const edition = v.otherEditions?.[editionIndex]
+              return edition ? (
+                <a
+                  key={edition.label}
+                  href={edition.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-2 text-center font-data text-[11px] text-olive underline decoration-olive/40 underline-offset-4 transition-colors hover:text-sindoor hover:decoration-sindoor/60"
+                >
+                  Also available in {edition.label} &rarr;
+                </a>
+              ) : (
+                <span key={editionIndex} className="mt-2 block h-[17px]" aria-hidden="true" />
+              )
+            })}
           </div>
         </motion.div>
       ))}
