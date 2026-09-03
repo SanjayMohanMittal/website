@@ -156,7 +156,7 @@ export function Trilogy() {
     <>
       <ChapterHero
         id="trilogy"
-        n="02"
+        n="03"
         label="THE TRILOGY"
         headline="One argument, bound in three volumes."
         imageSrc="/images/chapter-trilogy.jpg"

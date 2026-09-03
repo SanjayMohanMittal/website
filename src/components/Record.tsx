@@ -8,13 +8,12 @@ export function Record() {
     <>
       <ChapterHero
         id="record"
-        n="01"
+        n="02"
         label="THE RECORD"
         headline="What was offered, and what remains."
         subtext="More than two decades with the Arya Samaj. Spent separating what Manu wrote from what came later."
         imageSrc="/images/havan-hero.jpg"
         imageAlt="A havan altar at dawn beneath the moon, embers rising"
-        showScrollPrompt
       />
       <motion.section
         className="grain snap-start mx-auto max-w-[1280px] px-5 py-16 sm:px-6 lg:py-24"
@@ -43,7 +42,7 @@ export function Record() {
               />
             </div>
             <p className="mt-5 text-center font-text text-[14px] italic leading-[1.5] text-sindoor sm:text-left">
-              Sañjay Mohan Mittal, B.Tech., MBA (Cornell University)
+              Sañjay Mohan Mittal, B.Tech. (GBPUAT), MBA (Cornell University)
             </p>
           </div>
 
@@ -54,7 +53,8 @@ export function Record() {
 
             <div className="mt-6 max-w-[70ch] space-y-5 text-[17px] leading-[1.75] text-ink-soft lg:text-[18px]">
               <p>
-                I am Sañjay Mohan Mittal. I hold a Bachelor of Technology and a Master of Business
+                I am Sañjay Mohan Mittal. I hold a Bachelor of Technology in Mechanical Engineering from
+                Govind Ballabh Pant University of Agriculture and Technology, and a Master of Business
                 Administration from Cornell University, a technical and managerial foundation that shaped how
                 I think. Alongside that formal education, I developed an early and enduring inclination
                 toward spirituality and the study of Vedic thought, and that is what led me here.

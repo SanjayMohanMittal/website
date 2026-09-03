@@ -4,6 +4,7 @@ import { useFadeUpVariants, fadeUpViewport } from '@/lib/motion'
 import { ChapterHero } from '@/components/ChapterHero'
 
 const EXPLORE_LINKS = [
+  { label: 'The Text', href: '#text' },
   { label: 'The Record', href: '#record' },
   { label: 'The Trilogy', href: '#trilogy' },
   { label: 'FAQ', href: '/faq.html' },
@@ -24,7 +25,7 @@ export function Footer() {
     <>
       <ChapterHero
         id="contact"
-        n="04"
+        n="05"
         label="CONTACT"
         headline="The way back."
         imageSrc="/images/chapter-contact.jpg"

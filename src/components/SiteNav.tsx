@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
 
 const CHAPTERS = [
-  { n: '01', label: 'THE RECORD', href: '#record' },
-  { n: '02', label: 'THE TRILOGY', href: '#trilogy' },
-  { n: '03', label: 'THE FACETS', href: '#facets' },
-  { n: '04', label: 'CONTACT', href: '#contact' },
+  { n: '01', label: 'THE TEXT', href: '#text' },
+  { n: '02', label: 'THE RECORD', href: '#record' },
+  { n: '03', label: 'THE TRILOGY', href: '#trilogy' },
+  { n: '04', label: 'THE FACETS', href: '#facets' },
+  { n: '05', label: 'CONTACT', href: '#contact' },
 ]
 
 /**

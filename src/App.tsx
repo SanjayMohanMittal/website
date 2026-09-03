@@ -1,5 +1,6 @@
 import { Analytics } from '@vercel/analytics/react'
 import { SiteNav } from '@/components/SiteNav'
+import { TheText } from '@/components/TheText'
 import { Record } from '@/components/Record'
 import { Trilogy } from '@/components/Trilogy'
 import { Excerpts } from '@/components/Excerpts'
@@ -20,6 +21,7 @@ function App() {
       </a>
       <SiteNav />
       <main id="main">
+        <TheText />
         <Record />
         <Trilogy />
         <Excerpts />

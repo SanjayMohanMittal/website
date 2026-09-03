@@ -4,7 +4,7 @@ export function Facets() {
   return (
     <ChapterHero
       id="facets"
-      n="03"
+      n="04"
       label="THE FACETS"
       headline="Everywhere else the fire is lit."
       subtext="The wider work."
