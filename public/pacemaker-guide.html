@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Pacemaker Quick Guide</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&family=Manrope:opsz@14..24&display=swap');
+
+  :root{
+    --ink:#1C2622;
+    --ink-soft:#49564F;
+    --paper:#F3F5F2;
+    --card:#FFFFFF;
+    --line:#E3E7E2;
+    --brand:#1C3B36;
+    --brand-soft:#2E5A52;
+    --do:#2F7A5C;
+    --do-bg:#E7F3EC;
+    --ask:#FF9500;
+    --ask-bg:#FFF1D9;
+    --avoid:#FF2D55;
+    --avoid-bg:#FFE1E8;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;background:var(--paper);}
+  body{
+    font-family:'Manrope',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+    color:var(--ink);
+    -webkit-font-smoothing:antialiased;
+    padding-bottom:40px;
+  }
+
+  .app{max-width:520px;margin:0 auto;padding:0 16px;}
+
+  /* ---------- Hero ---------- */
+  .hero{
+    padding:28px 4px 18px;
+    text-align:center;
+  }
+  .hero svg.pulse{width:100%;max-width:280px;height:48px;display:block;margin:0 auto 6px;}
+  .hero .pulse-path{
+    fill:none;
+    stroke:var(--brand);
+    stroke-width:2.4;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+    stroke-dasharray:340;
+    stroke-dashoffset:340;
+    animation:draw 1.8s ease-out forwards;
+  }
+  @keyframes draw{to{stroke-dashoffset:0;}}
+  .hero h1{
+    font-size:26px;
+    font-weight:800;
+    letter-spacing:-0.02em;
+    margin:4px 0 4px;
+    color:var(--brand);
+  }
+  .hero p{
+    font-size:16.5px;
+    color:var(--ink-soft);
+    margin:0;
+    font-weight:500;
+  }
+
+  /* ---------- Legend ---------- */
+  .legend{
+    display:flex;
+    justify-content:center;
+    gap:16px;
+    flex-wrap:wrap;
+    margin:16px 0 22px;
+    font-size:14.5px;
+    font-weight:600;
+    color:var(--ink-soft);
+  }
+  .legend span{display:inline-flex;align-items:center;gap:6px;}
+  .dot{width:10px;height:10px;border-radius:50%;display:inline-block;flex-shrink:0;}
+  .dot.do{background:var(--do);}
+  .dot.ask{background:var(--ask);box-shadow:0 0 0 3px rgba(255,149,0,0.22),0 0 7px rgba(255,149,0,0.55);}
+  .dot.avoid{background:var(--avoid);box-shadow:0 0 0 3px rgba(255,45,85,0.22),0 0 7px rgba(255,45,85,0.55);}
+
+  /* ---------- Card shell ---------- */
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:18px;
+    margin-bottom:12px;
+    overflow:hidden;
+  }
+
+  /* ---------- My Info ---------- */
+  .myinfo{padding:16px 18px;}
+  .myinfo-head{display:flex;align-items:center;gap:12px;margin-bottom:2px;}
+  .icon-badge{
+    width:42px;height:42px;border-radius:12px;
+    background:var(--brand);
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+  }
+  .icon-badge svg{width:22px;height:22px;stroke:#fff;fill:none;}
+  .myinfo h2{font-size:18px;margin:0;font-weight:700;}
+  .myinfo .sub{font-size:14px;color:var(--ink-soft);margin-top:2px;}
+  .myinfo-body{margin-top:14px;}
+  .info-row{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:12px 0;border-top:1px solid var(--line);
+    font-size:16.5px;gap:10px;
+  }
+  .info-row:first-child{border-top:none;}
+  .info-row .label{color:var(--ink-soft);font-weight:600;flex-shrink:0;}
+  .info-row .value{font-weight:700;text-align:right;flex-grow:1;}
+  .info-row .value.empty{color:#8A938D;font-weight:600;}
+  .call-btn{
+    background:var(--do-bg);color:var(--do);
+    font-weight:700;font-size:15.5px;
+    padding:9px 16px;border-radius:999px;
+    text-decoration:none;white-space:nowrap;
+    display:inline-block;
+  }
+  .edit-toggle{
+    margin-top:14px;width:100%;min-height:48px;
+    background:var(--paper);border:1px solid var(--line);
+    color:var(--brand);font-weight:700;font-size:16px;
+    padding:12px;border-radius:12px;
+    font-family:inherit;
+  }
+  .edit-form{margin-top:14px;display:none;}
+  .edit-form.open{display:block;}
+  .edit-form label{
+    display:block;font-size:14.5px;font-weight:700;
+    color:var(--ink-soft);margin:12px 0 6px;
+  }
+  .edit-form input{
+    width:100%;min-height:48px;padding:12px 14px;border:1px solid var(--line);
+    border-radius:10px;font-size:17px;font-family:inherit;
+    background:var(--paper);
+  }
+  .edit-form input:focus{outline:2px solid var(--brand-soft);outline-offset:1px;}
+  .save-btn{
+    margin-top:14px;width:100%;min-height:50px;background:var(--brand);color:#fff;
+    border:none;padding:14px;border-radius:12px;font-weight:700;
+    font-size:16.5px;font-family:inherit;
+  }
+  .save-note{font-size:14px;color:var(--do);font-weight:700;margin-top:10px;display:none;}
+
+  /* ---------- Always card ---------- */
+  .always{padding:16px 18px;background:linear-gradient(180deg,#F6FBF8,#FFFFFF);}
+  .always-head{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+  .always h2{font-size:18px;margin:0;font-weight:700;}
+  .always .sub{font-size:14px;color:var(--ink-soft);margin-top:2px;}
+  .bullet-list{list-style:none;margin:0;padding:0;}
+  .bullet-list li{
+    display:flex;align-items:flex-start;gap:10px;
+    font-size:16.5px;line-height:1.5;padding:7px 0;font-weight:600;
+  }
+  .bullet-list li .dot{margin-top:8px;}
+
+  /* ---------- Accordion ---------- */
+  .acc-item{padding:0;}
+  .acc-trigger{
+    width:100%;background:none;border:none;text-align:left;
+    display:flex;align-items:center;gap:12px;
+    padding:17px 18px;font-family:inherit;cursor:pointer;
+  }
+  .acc-trigger .titles{flex-grow:1;min-width:0;}
+  .acc-trigger h3{font-size:17px;margin:0;font-weight:700;}
+  .acc-trigger .one-line{font-size:14px;color:var(--ink-soft);margin-top:2px;font-weight:500;}
+  .chevron{
+    width:22px;height:22px;flex-shrink:0;color:var(--ink-soft);
+    transition:transform .25s ease;
+  }
+  .acc-item.open .chevron{transform:rotate(180deg);}
+  .acc-panel{
+    max-height:0;overflow:hidden;
+    transition:max-height .3s ease;
+  }
+  .acc-panel-inner{padding:0 18px 18px 74px;}
+  .acc-panel-inner .bullet-list li{font-weight:600;font-size:16px;}
+
+  footer{
+    text-align:center;font-size:13px;color:var(--ink-soft);
+    line-height:1.6;margin-top:20px;padding:0 12px;
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div class="hero">
+    <svg class="pulse" viewBox="0 0 280 48">
+      <path class="pulse-path" d="M0,24 L60,24 L75,6 L92,42 L108,16 L120,24 L280,24"/>
+    </svg>
+    <h1>Pacemaker Quick Guide</h1>
+    <p>Tap a card. Skim, don't read.</p>
+  </div>
+
+  <div class="legend">
+    <span><i class="dot do"></i>Fine to do</span>
+    <span><i class="dot ask"></i>Take care</span>
+    <span><i class="dot avoid"></i>Avoid</span>
+  </div>
+
+  <!-- MY INFO -->
+  <div class="card myinfo">
+    <div class="myinfo-head">
+      <div class="icon-badge">
+        <svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 20.5c-4-2.7-8-6-8-10.2C4 7 6 5 8.5 5c1.6 0 3 .8 3.5 2 0.5-1.2 1.9-2 3.5-2C18 5 20 7 20 10.3c0 4.2-4 7.5-8 10.2z"/>
+          <polyline points="6,12 9,12 10.5,9 12.5,15 14,12 18,12"/>
+        </svg>
+      </div>
+      <div>
+        <h2>My Info</h2>
+        <div class="sub">Saved on this phone, for you only</div>
+      </div>
+    </div>
+
+    <div class="myinfo-body">
+      <div class="info-row">
+        <span class="label">Device</span>
+        <span class="value empty" id="deviceDisplay">Not set</span>
+      </div>
+      <div class="info-row">
+        <span class="label">Cardiologist</span>
+        <span class="value" id="phoneDisplayWrap"><span class="value empty" id="phoneDisplay">Not set</span></span>
+      </div>
+    </div>
+
+    <button class="edit-toggle" id="editToggle" type="button">Add / edit my info</button>
+
+    <div class="edit-form" id="editForm">
+      <label for="deviceInput">Device / manufacturer</label>
+      <input id="deviceInput" type="text" placeholder="e.g. Medtronic Azure">
+
+      <label for="phoneInput">Cardiologist's phone</label>
+      <input id="phoneInput" type="tel" placeholder="e.g. (908) 555-0134">
+
+      <button class="save-btn" id="saveBtn" type="button">Save</button>
+      <div class="save-note" id="saveNote">Saved ✓</div>
+    </div>
+  </div>
+
+  <!-- ALWAYS -->
+  <div class="card always">
+    <div class="always-head">
+      <div class="icon-badge">
+        <svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="5" width="18" height="14" rx="2.5"/>
+          <line x1="3" y1="9.5" x2="21" y2="9.5"/>
+          <line x1="6.5" y1="14" x2="12" y2="14"/>
+        </svg>
+      </div>
+      <div>
+        <h2>Always, everywhere</h2>
+        <div class="sub">The two habits that matter most</div>
+      </div>
+    </div>
+    <ul class="bullet-list">
+      <li><i class="dot do"></i>Carry your pacemaker ID card in your wallet</li>
+      <li><i class="dot do"></i>Wear a medical alert bracelet</li>
+      <li><i class="dot do"></i>Keep a photo of your ID card on your phone</li>
+    </ul>
+  </div>
+
+  <!-- ACCORDION -->
+  <div class="card">
+    <div class="acc-item open" data-item>
+      <button class="acc-trigger" data-trigger>
+        <div class="icon-badge">
+          <svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 2 11 13"/><path d="M22 2 15 22 11 13 2 9 22 2"/>
+          </svg>
+        </div>
+        <div class="titles">
+          <h3>Airports &amp; Travel</h3>
+          <div class="one-line">Say it before you're screened</div>
+        </div>
+        <svg class="chevron" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6,9 12,15 18,9"/></svg>
+      </button>
+      <div class="acc-panel" data-panel>
+        <div class="acc-panel-inner">
+          <ul class="bullet-list">
+            <li><i class="dot do"></i>Say "I have a pacemaker" before screening</li>
+            <li><i class="dot do"></i>Ask for a body scanner or pat-down, not the walk-through detector</li>
+            <li><i class="dot do"></i>Keep your ID card in your carry-on</li>
+            <li><i class="dot ask"></i>Flying abroad? Ask about an international ID card</li>
+            <li><i class="dot do"></i>Arrive a little early for screening</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="acc-item" data-item>
+      <button class="acc-trigger" data-trigger>
+        <div class="icon-badge">
+          <svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3l7 3v5c0 5-3.5 8.5-7 10-3.5-1.5-7-5-7-10V6l7-3z"/>
+            <polyline points="9,12 11,14 15,10"/>
+          </svg>
+        </div>
+        <div class="titles">
+          <h3>Stores, Parks &amp; Events</h3>
+          <div class="one-line">Amusement parks, courthouses, concerts</div>
+        </div>
+        <svg class="chevron" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6,9 12,15 18,9"/></svg>
+      </button>
+      <div class="acc-panel" data-panel>
+        <div class="acc-panel-inner">
+          <ul class="bullet-list">
+            <li><i class="dot do"></i>Walk through entrance scanners at a normal pace</li>
+            <li><i class="dot ask"></i>Don't stop or lean in the doorway gate</li>
+            <li><i class="dot do"></i>Mention your pacemaker if a scanner flags you</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="acc-item" data-item>
+      <button class="acc-trigger" data-trigger>
+        <div class="icon-badge">
+          <svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="7" y="2" width="10" height="20" rx="2"/>
+            <line x1="11" y1="18" x2="13" y2="18"/>
+          </svg>
+        </div>
+        <div class="titles">
+          <h3>Phone &amp; Electronics</h3>
+          <div class="one-line">Mostly fine, keep some distance</div>
+        </div>
+        <svg class="chevron" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6,9 12,15 18,9"/></svg>
+      </button>
+      <div class="acc-panel" data-panel>
+        <div class="acc-panel-inner">
+          <ul class="bullet-list">
+            <li><i class="dot do"></i>Keep your phone 6+ inches from your device</li>
+            <li><i class="dot ask"></i>Don't carry it in a chest pocket</li>
+            <li><i class="dot do"></i>Use your opposite ear for calls</li>
+            <li><i class="dot ask"></i>Wireless charging? Keep it 12+ inches away</li>
+            <li><i class="dot do"></i>Laptops, TVs, microwaves: no issue</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="acc-item" data-item>
+      <button class="acc-trigger" data-trigger>
+        <div class="icon-badge">
+          <svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="currentColor" stroke="none">
+            <path d="M12 2c1 3-3 4-3 8a3 3 0 0 0 6 0c0-1-1-2-1-3 2 1 3 3 3 5a5 5 0 0 1-10 0c0-4 3-6 5-10z"/>
+          </svg>
+        </div>
+        <div class="titles">
+          <h3>Kitchen</h3>
+          <div class="one-line">Just the induction cooktop</div>
+        </div>
+        <svg class="chevron" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6,9 12,15 18,9"/></svg>
+      </button>
+      <div class="acc-panel" data-panel>
+        <div class="acc-panel-inner">
+          <ul class="bullet-list">
+            <li><i class="dot ask"></i>Stand about 2 feet from an induction cooktop</li>
+            <li><i class="dot do"></i>Use the back burners when you can</li>
+            <li><i class="dot do"></i>Gas and electric coil stoves: no issue</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="acc-item" data-item>
+      <button class="acc-trigger" data-trigger>
+        <div class="icon-badge">
+          <svg viewBox="0 0 24 24" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 13l2-5a2 2 0 0 1 2-1h10a2 2 0 0 1 2 1l2 5"/>
+            <rect x="2" y="13" width="20" height="5" rx="1.2"/>
+            <circle cx="7.5" cy="18.3" r="1.6" fill="currentColor" stroke="none"/>
+            <circle cx="16.5" cy="18.3" r="1.6" fill="currentColor" stroke="none"/>
+          </svg>
+        </div>
+        <div class="titles">
+          <h3>Cars &amp; EVs</h3>
+          <div class="one-line">Driving and charging, EVs included</div>
+        </div>
+        <svg class="chevron" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6,9 12,15 18,9"/></svg>
+      </button>
+      <div class="acc-panel" data-panel>
+        <div class="acc-panel-inner">
+          <ul class="bullet-list">
+            <li><i class="dot do"></i>Driving or riding in any car, including EVs: safe</li>
+            <li><i class="dot do"></i>Charging an EV, even a Tesla Supercharger: safe</li>
+            <li><i class="dot ask"></i>Step back while it's actively charging</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="acc-item" data-item>
+      <button class="acc-trigger" data-trigger>
+        <div class="icon-badge">
+          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="4" x2="12" y2="20" stroke="currentColor" stroke-width="4"/>
+            <line x1="4" y1="12" x2="20" y2="12" stroke="currentColor" stroke-width="4"/>
+          </svg>
+        </div>
+        <div class="titles">
+          <h3>Doctor &amp; Dentist</h3>
+          <div class="one-line">Speak up before any procedure</div>
+        </div>
+        <svg class="chevron" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6,9 12,15 18,9"/></svg>
+      </button>
+      <div class="acc-panel" data-panel>
+        <div class="acc-panel-inner">
+          <ul class="bullet-list">
+            <li><i class="dot do"></i>Always mention your pacemaker first</li>
+            <li><i class="dot ask"></i>MRI: only if your device is "MRI-conditional," ask your cardiologist</li>
+            <li><i class="dot avoid"></i>TENS units and diathermy therapy</li>
+            <li><i class="dot do"></i>Routine dental work and X-rays: fine</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="acc-item" data-item>
+      <button class="acc-trigger" data-trigger>
+        <div class="icon-badge">
+          <svg viewBox="0 0 24 24" fill="currentColor" stroke="none">
+            <polygon points="13,2 3,14 11,14 9,22 21,10 13,10 13,2"/>
+          </svg>
+        </div>
+        <div class="titles">
+          <h3>Work &amp; Heavy Equipment</h3>
+          <div class="one-line">Welding, generators, high-voltage gear</div>
+        </div>
+        <svg class="chevron" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="6,9 12,15 18,9"/></svg>
+      </button>
+      <div class="acc-panel" data-panel>
+        <div class="acc-panel-inner">
+          <ul class="bullet-list">
+            <li><i class="dot ask"></i>Stay 2 feet from welding equipment or generators</li>
+            <li><i class="dot ask"></i>Same for high-voltage transformers</li>
+            <li><i class="dot do"></i>Ask about an on-site safety test if it's part of your job</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    Based on guidance from Mayo Clinic, Cleveland Clinic, FDA, TSA &amp; device manufacturers.<br>
+    Confirm specifics for your exact device with your cardiologist.
+  </footer>
+
+</div>
+
+<script>
+  // Accordion
+  document.querySelectorAll('[data-item]').forEach(function(item){
+    var trigger = item.querySelector('[data-trigger]');
+    var panel = item.querySelector('[data-panel]');
+    function setState(open){
+      if(open){
+        item.classList.add('open');
+        panel.style.maxHeight = panel.scrollHeight + 'px';
+      } else {
+        item.classList.remove('open');
+        panel.style.maxHeight = 0;
+      }
+    }
+    setState(item.classList.contains('open'));
+    trigger.addEventListener('click', function(){
+      setState(!item.classList.contains('open'));
+    });
+    window.addEventListener('resize', function(){
+      if(item.classList.contains('open')){
+        panel.style.maxHeight = panel.scrollHeight + 'px';
+      }
+    });
+  });
+
+  // My Info persistence
+  var deviceInput = document.getElementById('deviceInput');
+  var phoneInput = document.getElementById('phoneInput');
+  var deviceDisplay = document.getElementById('deviceDisplay');
+  var phoneDisplay = document.getElementById('phoneDisplay');
+  var phoneDisplayWrap = document.getElementById('phoneDisplayWrap');
+  var editForm = document.getElementById('editForm');
+  var editToggle = document.getElementById('editToggle');
+  var saveBtn = document.getElementById('saveBtn');
+  var saveNote = document.getElementById('saveNote');
+
+  function renderDisplay(data){
+    if(data && data.device){
+      deviceDisplay.textContent = data.device;
+      deviceDisplay.classList.remove('empty');
+    } else {
+      deviceDisplay.textContent = 'Not set';
+      deviceDisplay.classList.add('empty');
+    }
+    if(data && data.phone){
+      phoneDisplayWrap.innerHTML = '<a class="call-btn" href="tel:' + data.phone.replace(/[^0-9+]/g,'') + '">Call ' + data.phone + '</a>';
+    } else {
+      phoneDisplayWrap.innerHTML = '<span class="value empty">Not set</span>';
+    }
+  }
+
+  function loadInfo(){
+    try{
+      var raw = localStorage.getItem('pacemaker_myinfo');
+      if(raw){
+        var data = JSON.parse(raw);
+        renderDisplay(data);
+        if(data.device) deviceInput.value = data.device;
+        if(data.phone) phoneInput.value = data.phone;
+      }
+    }catch(e){
+      // storage unavailable or nothing saved yet, keep the defaults
+    }
+  }
+
+  editToggle.addEventListener('click', function(){
+    editForm.classList.toggle('open');
+  });
+
+  saveBtn.addEventListener('click', function(){
+    var data = { device: deviceInput.value.trim(), phone: phoneInput.value.trim() };
+    try{
+      localStorage.setItem('pacemaker_myinfo', JSON.stringify(data));
+      renderDisplay(data);
+      saveNote.textContent = 'Saved ✓';
+      saveNote.style.color = 'var(--do)';
+      saveNote.style.display = 'block';
+      setTimeout(function(){ saveNote.style.display = 'none'; editForm.classList.remove('open'); }, 900);
+    }catch(e){
+      saveNote.textContent = 'Could not save. Try again.';
+      saveNote.style.color = '#B33F3F';
+      saveNote.style.display = 'block';
+    }
+  });
+
+  loadInfo();
+</script>
+</body>
+</html>
