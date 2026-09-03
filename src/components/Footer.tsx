@@ -4,8 +4,8 @@ import { useFadeUpVariants, fadeUpViewport } from '@/lib/motion'
 import { ChapterHero } from '@/components/ChapterHero'
 
 const EXPLORE_LINKS = [
-  { label: 'The Text', href: '#text' },
   { label: 'The Record', href: '#record' },
+  { label: 'The Text', href: '#text' },
   { label: 'The Trilogy', href: '#trilogy' },
   { label: 'FAQ', href: '/faq.html' },
   { label: 'The Facets', href: '#facets' },

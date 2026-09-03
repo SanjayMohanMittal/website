@@ -8,12 +8,13 @@ export function Record() {
     <>
       <ChapterHero
         id="record"
-        n="02"
+        n="01"
         label="THE RECORD"
         headline="What was offered, and what remains."
         subtext="More than two decades with the Arya Samaj. Spent separating what Manu wrote from what came later."
         imageSrc="/images/havan-hero.jpg"
         imageAlt="A havan altar at dawn beneath the moon, embers rising"
+        showScrollPrompt
       />
       <motion.section
         className="grain snap-start mx-auto max-w-[1280px] px-5 py-16 sm:px-6 lg:py-24"
@@ -43,6 +44,9 @@ export function Record() {
             </div>
             <p className="mt-5 text-center font-text text-[14px] italic leading-[1.5] text-sindoor sm:text-left">
               Sañjay Mohan Mittal, B.Tech. (GBPUAT), MBA (Cornell University)
+            </p>
+            <p className="mt-1.5 text-center font-data text-[11px] leading-[1.5] text-olive sm:text-left">
+              The Manusmṛti trilogy is endorsed by the Arya Samaj Mandir of New Jersey.
             </p>
           </div>
 
@@ -75,7 +79,7 @@ export function Record() {
             </div>
 
             <p className="mt-8 max-w-[70ch] border-t border-olive/20 pt-6 font-text text-[16px] italic leading-[1.6] text-olive">
-              That work is bound in the three volumes below.
+              But before the three volumes, it helps to know exactly what's authentic in them, and what isn't.
             </p>
           </div>
         </div>

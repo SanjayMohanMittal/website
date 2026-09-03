@@ -8,12 +8,11 @@ export function TheText() {
     <>
       <ChapterHero
         id="text"
-        n="01"
+        n="02"
         label="THE TEXT"
         headline="Before the trilogy, the text itself."
         imageSrc="/images/chapter-text.jpg"
         imageAlt="An open ancient manuscript on a stone plinth, lit by a single oil lamp beneath a glowing moon"
-        showScrollPrompt
       />
       <motion.section
         className="grain snap-start mx-auto max-w-[1280px] px-5 py-16 sm:px-6 lg:py-24"

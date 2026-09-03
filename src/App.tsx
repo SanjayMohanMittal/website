@@ -21,8 +21,8 @@ function App() {
       </a>
       <SiteNav />
       <main id="main">
-        <TheText />
         <Record />
+        <TheText />
         <Trilogy />
         <Excerpts />
         <Facets />
